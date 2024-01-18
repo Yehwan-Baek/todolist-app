@@ -2,6 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    // Table of DateTasks
     await queryInterface.createTable('DateTasks', {
       id: {
         allowNull: false,
@@ -40,7 +41,10 @@ module.exports = {
       }
     });
   },
+
   async down(queryInterface, Sequelize) {
+    // 테이블 삭제
     await queryInterface.dropTable('DateTasks');
+    await queryInterface.dropTable('Users');
   }
 };
