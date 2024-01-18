@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { User } = require('../models');
+const { User, DateTask } = require('../models');
 const session = require('express-session');
 
 class UserService {
@@ -90,12 +90,22 @@ class UserService {
     }
   }
 
-  // User profile
-  async profile  (req, res)  {
+  // Current user logged in
+  async profile  (req, res) {
     try {
       if (req.session.user) {
-        // bring data from session
-        res.status(200).json({ user: req.session.user });
+        const userId = req.session.user.id;
+  
+        // Fetch user data along with associated DateTasks
+        const user = await User.findByPk(userId, {
+          include: [{ model: DateTask }],
+        });
+  
+        if (user) {
+          res.status(200).json({ user });
+        } else {
+          res.status(404).json({ error: 'User not found' });
+        }
       } else {
         res.status(401).json({ error: 'Not authenticated' });
       }
@@ -103,7 +113,7 @@ class UserService {
       console.error('Error during profile request:', error.message);
       res.status(500).json({ error: 'Internal server error' });
     }
-  };
+  }
 
   // User logout
   async logoutUser(req) {
