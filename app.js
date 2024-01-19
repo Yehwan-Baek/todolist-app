@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const session = require('express-session');
 const userRouter = require('./controllers/UserController');
+const taskRouter = require('./controllers/DateTaskController')
 const app = express();
 
 app.use(morgan('dev'));
@@ -16,8 +17,10 @@ app.use(session({
   cookie: { secure: false }
 }));
 
-//userrouter
+//user router
 app.use('/user', userRouter);
+//tasks router
+app.use('/tasks', taskRouter)
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
