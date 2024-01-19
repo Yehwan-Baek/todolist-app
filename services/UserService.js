@@ -82,8 +82,11 @@ class UserService {
   
       return user;
     } catch (error) {
-      console.error('Error during authentication:', error.message);
-      throw new Error('Authentication failed');
+      if (error.message === 'User not found') {
+        throw new Error(error.message);
+      }else if(error.message === 'Invalid username or password') {
+        throw new Error(error.message);
+      }
     }
   }
 
