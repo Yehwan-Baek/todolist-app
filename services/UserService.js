@@ -63,11 +63,8 @@ class UserService {
       if (!user) {
         throw new Error('User not found');
       }
-  
-      // console.log('entered username:', username);
-      // console.log('Entered Password:', password);
-      // console.log('Stored Password Hash:', user.password);
-  
+      
+      // check entered password matches saved password from DB
       const isPasswordValid = await bcrypt.compare(password, user.password);
   
       console.log('Is Password Valid?', isPasswordValid);
@@ -90,7 +87,7 @@ class UserService {
     }
   }
 
-  // Current user logged in
+  // Data of current user logged in
   async profile  (req, res) {
     try {
       if (req.session.user) {
